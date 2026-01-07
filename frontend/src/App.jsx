@@ -1,35 +1,32 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import gsap from 'gsap';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [mensaje, setMensaje] = useState("Esperando al servidor...");
+
+  useEffect(() => {
+    // Llamada a tu Django local
+    axios.get('http://127.0.0.1:8000/api/test/')
+      .then(res => {
+        setMensaje(res.data.status);
+        // Animación GSAP cuando llega la respuesta
+        gsap.fromTo(".status-card", 
+          { opacity: 0, scale: 0.8, y: 50 }, 
+          { opacity: 1, scale: 1, y: 0, duration: 1, ease: "elastic.out(1, 0.5)" }
+        );
+      })
+      .catch(err => setMensaje("Error de conexión"));
+  }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div style={{ height: '100vh', display: 'flex', background: '#111', color: 'white', alignItems: 'center', justifyContent: 'center' }}>
+      <div className="status-card" style={{ padding: '40px', border: '1px solid #333', borderRadius: '15px', textAlign: 'center' }}>
+        <h1 style={{ fontSize: '1.2rem', color: '#888' }}>TECNOLOGÍA EMPRESARIAL</h1>
+        <p style={{ fontSize: '2rem', fontWeight: 'bold' }}>{mensaje}</p>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
