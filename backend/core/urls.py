@@ -22,6 +22,6 @@ def test_view(request):
     return JsonResponse({"status": "Django funcionando", "empresa": "Tecnología Empresarial"})
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    #path('admin/', admin.site.urls),
     path('api/test/', test_view),
 ]
