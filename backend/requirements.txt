@@ -1,7 +1,9 @@
 asgiref==3.11.0
+contextvars==2.4
 Django==3.2.25
 django-cors-headers==4.9.0
 djangorestframework==3.16.1
+immutables==0.21
 python-dotenv==1.2.1
 pytz==2025.2
 sqlparse==0.5.5
