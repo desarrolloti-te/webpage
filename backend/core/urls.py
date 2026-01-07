@@ -23,5 +23,5 @@ def test_view(request):
 
 urlpatterns = [
     #path('admin/', admin.site.urls),
-    path('test/', test_view),
+    path('api/test/', test_view),
 ]
