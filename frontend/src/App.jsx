@@ -10,165 +10,207 @@ gsap.registerPlugin(ScrollTrigger);
 
 function App() {
   const container = useRef();
-
-  const cld = new Cloudinary({
-    cloud: { cloudName: "dsq3wouwm" }
-  });
+  const cld = new Cloudinary({ cloud: { cloudName: "dsq3wouwm" } });
 
   const myVideo = cld.video("1477027_People_Business_3840x2160_vjzf8q")
     .delivery(quality("auto"))
     .delivery(format("auto"));
 
   useGSAP(() => {
-    // Animación de aparición del texto Hero
-    gsap.from(".hero-title", {
-      y: 100,
-      opacity: 0,
-      duration: 1.5,
-      ease: "power4.out"
-    });
+    const tl = gsap.timeline();
 
-    // Efecto de Parallax y cambio de color en el Scroll
-    gsap.to(".main-container", {
-      scrollTrigger: {
-        trigger: ".fiscal-section",
-        start: "top center",
-        end: "bottom center",
-        scrub: true,
-      },
-      backgroundColor: "#0a0a0a", // Se vuelve más profundo/oscuro
-    });
+    tl.from(".nav-container", { y: -20, opacity: 0, duration: 1, ease: "power3.out" })
+      .from(".hero-content", { y: 60, opacity: 0, duration: 1.2, ease: "power4.out" }, "-=0.5");
 
-    // Revelado de secciones
-    const sections = gsap.utils.toArray('.reveal');
-    sections.forEach(section => {
-      gsap.from(section, {
-        scrollTrigger: {
-          trigger: section,
-          start: "top 80%",
-        },
-        y: 50,
-        opacity: 0,
-        duration: 1,
-        ease: "expo.out"
+    const lightSections = document.querySelectorAll(".bg-white, .bg-\\[\\#ffffff\\]");
+
+    lightSections.forEach((section) => {
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top 10%", // Cuando la sección llega cerca del navbar
+        end: "bottom 10%",
+        onEnter: () => updateNavStyle(true),    // Entra en sección blanca
+        onLeave: () => updateNavStyle(false),   // Sale por abajo
+        onEnterBack: () => updateNavStyle(true),// Regresa desde abajo
+        onLeaveBack: () => updateNavStyle(false)// Sale por arriba
       });
     });
+    function updateNavStyle(isDarkText) {
+      const navLogoBox = document.querySelector(".nav-logo-box");
+      const navLinksBox = document.querySelector(".nav-links-box");
+      const logoImg = document.querySelector(".logo-img");
+      const brandText = document.querySelector(".brand-text");
+      const navLinks = document.querySelectorAll(".nav-link");
 
-    gsap.from(".hero-title", { y: 100, opacity: 0, duration: 1.5, ease: "power4.out" });
-
-    // --- Efecto Extra estilo Mercedes: El video se oscurece al bajar ---
-    gsap.to(".video-container", {
+      if (isDarkText) {
+        // ESTILO PARA FONDO BLANCO (Texto oscuro)
+        gsap.to(navLogoBox, { backgroundColor: "rgba(0,0,0,0.05)", borderColor: "rgba(0,0,0,0.1)", duration: 0.3 });
+        gsap.to(navLinksBox, { backgroundColor: "rgba(0,0,0,0.05)", borderColor: "rgba(0,0,0,0.1)", duration: 0.3 });
+        gsap.to(brandText, { color: "#1e293b", duration: 0.3 }); // Slate 800
+        gsap.to(logoImg, { filter: "brightness(1) invert(0)", duration: 0.3 });
+        navLinks.forEach(link => gsap.to(link, { color: "#475569", duration: 0.3 }));
+      } else {
+        // ESTILO PARA FONDO OSCURO (Texto blanco - Original)
+        gsap.to(navLogoBox, { backgroundColor: "rgba(255,255,255,0.1)", borderColor: "rgba(255,255,255,0.2)", duration: 0.3 });
+        gsap.to(navLinksBox, { backgroundColor: "rgba(255,255,255,0.7)", borderColor: "rgba(255,255,255,0.4)", duration: 0.3 });
+        gsap.to(brandText, { color: "#ffffff", duration: 0.3 });
+        gsap.to(logoImg, { filter: "brightness(0) invert(1)", duration: 0.3 });
+        navLinks.forEach(link => gsap.to(link, { color: "#4b5563", duration: 0.3 }));
+      }
+    }
+    // Oscurecimiento dinámico al hacer scroll
+    gsap.to(".video-overlay", {
       scrollTrigger: {
         trigger: ".fiscal-section",
         start: "top bottom",
         end: "top center",
         scrub: true,
       },
-      opacity: 0.3,
-      scale: 1.1 // Ligero zoom al bajar
+      backgroundColor: "rgba(25, 55, 76, 0.95)", // Se funde con el color de la siguiente sección
     });
   }, { scope: container });
 
   return (
-    <div ref={container} className="main-container bg-[#19374c] text-white transition-colors duration-700">
-      <section className="relative h-screen flex flex-col justify-center items-center text-center overflow-hidden">
-        
+    // CAMBIO: Fondo principal a tu color corporativo y texto claro
+    <div ref={container} className="main-container bg-[#19374c] text-white overflow-x-hidden">
+
+      {/* Navbar (Mantenemos el estilo claro para contraste o puedes usar el oscuro anterior) */}
+      <nav className="nav-container fixed top-6 w-full z-50 px-4 flex justify-center">
+        <div className="max-w-7xl w-full flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="nav-logo-box flex items-center gap-3 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 shadow-sm transition-all">
+              <div className="flex items-center justify-center w-9 h-9 overflow-hidden">
+                <img src="/favicon.svg" alt="Logo" className="logo-img w-full h-full object-contain brightness-0 invert" />
+              </div>
+              <div className="w-[1px] h-6 bg-white/20 ml-1"></div>
+              <span className="brand-text tracking-tight text-white text-sm md:text-base font-medium">
+                Tecnología Empresarial
+              </span>
+            </div>
+          </div>
+          <div className="hidden lg:flex items-center gap-6 bg-white/10 backdrop-blur-md px-8 py-3 rounded-full border border-white/40 shadow-lg shadow-black/5">
+            {['Conócenos', 'Servicios', 'Soporte'].map((item) => (
+              <a key={item} href={`#${item.toLowerCase()}`} className="text-sm font-medium text-gray-600 hover:text-black transition-colors">
+                {item}
+              </a>
+            ))}
+          </div>
+          <button className="flex items-center gap-2 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 shadow-sm">
+            <span className="text-sm">Transformar mi empresa</span>
+            <div className="bg-green-300 p-1.5 rounded-full group-hover:rotate-45 transition-transform">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                <path d="M7 17L17 7M17 7H7M17 7V17" />
+              </svg>
+            </div>
+          </button>
+        </div>
+      </nav>
+
+      {/* --- HERO SECTION --- */}
+      <section className="relative h-screen flex items-center justify-center overflow-hidden">
         <div className="video-container absolute inset-0 z-0">
-          <AdvancedVideo 
-            cldVid={myVideo} 
-            autoPlay 
-            loop 
-            muted 
-            playsInline 
-            className="w-full h-full object-cover"
+          <AdvancedVideo
+            cldVid={myVideo}
+            autoPlay loop muted playsInline
+            className="w-full h-full object-cover scale-105" // Ligeramente más grande para el efecto de zoom
           />
-          <div className="absolute inset-0 bg-black/40" />
+          {/* CAMBIO: Overlay más oscuro desde el inicio */}
+          <div className="video-overlay absolute inset-0 bg-black/60 transition-colors duration-500" />
+          {/* Gradiente para suavizar la transición a la siguiente sección */}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#19374c]" />
         </div>
 
-        <div className="relative z-10 px-4">
-          <span className="text-blue-400 font-mono mb-4 tracking-[0.3em] uppercase text-sm block">
-            Innovación Administrativa
-          </span>
-          <h1 className="hero-title text-5xl md:text-8xl font-bold tracking-tighter leading-none">
-            FISCALIZACIÓN <br /> <span className="text-blue-600 italic">INTELIGENTE</span>
+        <div className="hero-content relative z-10 text-center px-4">
+          <h1 className="text-5xl md:text-8xl font-bold tracking-tighter leading-[0.9]">
+            <span className="text-white">Fiscalización </span>
+            <span className="text-[#39d1fa] italic">Digital</span>
           </h1>
-          <p className="mt-8 max-w-2xl mx-auto text-gray-200 text-lg md:text-xl leading-relaxed">
-            Digitalizamos tu estructura operativa para la Reforma Fiscal 2026. 
-            No solo software, sino materialidad y razón de negocios.
+          <p className="mt-8 max-w-2xl mx-auto text-slate-300 text-lg md:text-2xl leading-relaxed font-light">
+            Especialistas en trazabilidad, materialidad y cumplimiento. <br />
+            <span className="text-white font-medium">Un solo ecosistema para tu empresa.</span>
           </p>
-          <div className="mt-12 animate-bounce text-white/50">↓</div>
         </div>
       </section>
 
-      <section className="h-screen flex flex-col justify-center items-center text-center">
-        <picture>
-          <source srcSet="/img/banners/dos-hombres-de-negocios-felices-leyendo-un-correo-electronico-en-la-computadora-portatil-en-la-oficina-el-foco-esta-en-el-hombre-de-negocios-adulto-medio.webp" type="image/webp" />
-          <img 
-            src="/img/banners/dos-hombres-de-negocios-felices-leyendo-un-correo-electronico-en-la-computadora-portatil-en-la-oficina-el-foco-esta-en-el-hombre-de-negocios-adulto-medio.webp" 
-            alt="Rediseño Empresarial 2026" 
-            loading="lazy" 
-            className="banner-img w-full h-full object-cover"
-          />
-        </picture>
-        <span className="text-[#19374c]-500 font-mono mb-4 tracking-[0.3em] uppercase text-sm">Innovación Administrativa</span>
-        <h1 className="hero-title text-5xl md:text-8xl font-bold tracking-tighter leading-none">
-          FISCALIZACIÓN <br /> <span className="text-blue-600 italic">INTELIGENTE</span>
-        </h1>
-        <p className="mt-8 max-w-2xl text-[#19374c]-400 text-lg md:text-xl leading-relaxed">
-          Digitalizamos tu estructura operativa para la Reforma Fiscal 2026. 
-          No solo software, sino materialidad y razón de negocios.
-        </p>
-        <div className="mt-12 animate-bounce text-[#19374c]-500">↓</div>
-      </section>
-
-      <section className="fiscal-section min-h-screen py-24 px-6 flex items-center">
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+      {/* --- SECCIÓN FISCAL (Fondo Corporativo) --- */}
+      <section id="fiscal" className="fiscal-section min-h-screen py-32 px-6 bg-[#19374c]">
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-20 items-center">
           <div className="reveal">
-            <h2 className="text-4xl md:text-6xl font-bold mb-8">El Punto de <br/>Inflexión.</h2>
-            <p className="text-gray-400 text-lg mb-6">
-              La complejidad normativa actual exige trazabilidad documental. 
-              Muchos saben que tienen un problema; pocos saben cómo cuantificarlo.
+            <h2 className="text-5xl md:text-7xl font-bold mb-8 text-white leading-tight">
+              Blindaje <br /> <span className="text-[#39d1fa]">Estratégico.</span>
+            </h2>
+            <p className="text-slate-300 text-lg mb-8 leading-relaxed">
+              Hacienda ahora ve lo que tú no ves. Si tu operación administrativa no tiene materialidad y razón de negocios, tu empresa es vulnerable.
             </p>
-            <div className="border-l-2 border-blue-600 pl-6 py-2">
-              <p className="text-blue-400 font-bold italic">Reforma Fiscal 2026</p>
-              <p className="text-sm text-gray-500">Evidencia operativa como centro de la estrategia.</p>
+            <div className="flex gap-4 p-6 bg-white/5 rounded-3xl border border-white/10">
+              <div className="w-1 bg-[#39d1fa] rounded-full"></div>
+              <div>
+                <p className="font-bold text-white">Expertos en Transformación 2026</p>
+                <p className="text-sm text-slate-400">Alineamos cada proceso a los nuevos criterios gubernamentales.</p>
+              </div>
             </div>
           </div>
-          <div className="reveal relative">
-            <div className="aspect-square bg-blue-600/10 rounded-2xl border border-white/5 flex items-center justify-center p-12 text-center">
-              <span className="text-7xl font-light text-blue-500/50">CONTPAQi</span>
-              <div className="absolute inset-0 blur-3xl bg-blue-600/5 -z-10"></div>
+
+          <div className="reveal flex justify-center">
+            {/* Elemento visual que simula tecnología */}
+            <div className="w-full aspect-video bg-slate-800/50 rounded-[2rem] shadow-2xl border border-white/10 backdrop-blur-3xl p-4">
+              <div className="w-full h-full bg-[#19374c]/50 rounded-[1.5rem] flex items-center justify-center border border-white/5">
+                <span className="text-[#39d1fa] font-mono animate-pulse">SYSTEM_READY: MONITORING_ACTIVE</span>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* SECCIÓN 3: SERVICIOS (TARJETAS MODERNAS) */}
-      <section className="py-24 px-6 bg-white text-black">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="reveal text-4xl md:text-7xl font-bold mb-20 tracking-tighter">Rediseño <br/>Empresarial.</h2>
-          
+      {/* --- SECCIÓN SERVICIOS --- */}
+      <section className="py-32 px-6 bg-[#ffffff]"> {/* Un tono ligeramente más oscuro para separar */}
+        <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-3 gap-8">
-            {['Consultoría Digital', 'Automatización', 'Cumplimiento Fiscal'].map((service, i) => (
-              <div key={i} className="reveal group p-8 border border-gray-200 rounded-3xl hover:bg-black hover:text-white transition-all duration-500 cursor-pointer">
-                <span className="text-xs font-mono text-gray-400">0{i+1}</span>
-                <h3 className="text-2xl font-bold mt-4 mb-4">{service}</h3>
-                <p className="text-gray-500 group-hover:text-gray-400">Integración consultiva de sistemas para una operación inteligente.</p>
+            {['Rediseño Operativo', 'Ecosistema Cloud', 'Blindaje Fiscal'].map((item, i) => (
+              <div key={i} className="reveal bg-white/5 p-10 rounded-[2.5rem] border border-white/10 hover:border-[#39d1fa]/50 transition-all group">
+                <div className="w-14 h-14 bg-[#39d1fa]/10 rounded-2xl mb-6 flex items-center justify-center text-[#39d1fa] font-bold text-xl group-hover:bg-[#39d1fa] group-hover:text-[#19374c] transition-all">
+                  0{i + 1}
+                </div>
+                <h3 className="text-2xl font-bold mb-4 text-black">{item}</h3>
+                <p className="text-slate-400 leading-relaxed">
+                  Soluciones diseñadas para la alta dirección y departamentos contables.
+                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
+      <section id="fiscal" className="fiscal-section min-h-screen py-32 px-6 bg-[#19374c]">
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-20 items-center">
+          <div className="reveal">
+            <h2 className="text-5xl md:text-7xl font-bold mb-8 text-white leading-tight">
+              Blindaje <br /> <span className="text-[#39d1fa]">Estratégico.</span>
+            </h2>
+            <p className="text-slate-300 text-lg mb-8 leading-relaxed">
+              Hacienda ahora ve lo que tú no ves. Si tu operación administrativa no tiene materialidad y razón de negocios, tu empresa es vulnerable.
+            </p>
+            <div className="flex gap-4 p-6 bg-white/5 rounded-3xl border border-white/10">
+              <div className="w-1 bg-[#39d1fa] rounded-full"></div>
+              <div>
+                <p className="font-bold text-white">Expertos en Transformación 2026</p>
+                <p className="text-sm text-slate-400">Alineamos cada proceso a los nuevos criterios gubernamentales.</p>
+              </div>
+            </div>
+          </div>
 
-      {/* FOOTER / CTA */}
-      <footer className="py-24 px-6 text-center border-t border-white/5">
-        <h2 className="text-3xl font-bold mb-8 italic">¿Listo para la transición?</h2>
-        <button className="bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-full font-bold transition-transform hover:scale-105">
-          Agendar Consultoría Profesional
-        </button>
-      </footer>
-
+          <div className="reveal flex justify-center">
+            {/* Elemento visual que simula tecnología */}
+            <div className="w-full aspect-video bg-slate-800/50 rounded-[2rem] shadow-2xl border border-white/10 backdrop-blur-3xl p-4">
+              <div className="w-full h-full bg-[#19374c]/50 rounded-[1.5rem] flex items-center justify-center border border-white/5">
+                <span className="text-[#39d1fa] font-mono animate-pulse">SYSTEM_READY: MONITORING_ACTIVE</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
+
+
   );
 }
 
