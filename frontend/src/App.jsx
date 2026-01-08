@@ -1,4 +1,7 @@
 import { useRef } from 'react';
+import { Cloudinary } from "@cloudinary/url-gen";
+import { AdvancedVideo } from "@cloudinary/react";
+import { quality, format } from "@cloudinary/url-gen/actions/delivery";
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -7,6 +10,14 @@ gsap.registerPlugin(ScrollTrigger);
 
 function App() {
   const container = useRef();
+
+  const cld = new Cloudinary({
+    cloud: { cloudName: "dsq3wouwm" }
+  });
+
+  const myVideo = cld.video("1477027_People_Business_3840x2160_vjzf8q")
+    .delivery(quality("auto"))
+    .delivery(format("auto"));
 
   useGSAP(() => {
     // Animación de aparición del texto Hero
@@ -42,12 +53,54 @@ function App() {
         ease: "expo.out"
       });
     });
+
+    gsap.from(".hero-title", { y: 100, opacity: 0, duration: 1.5, ease: "power4.out" });
+
+    // --- Efecto Extra estilo Mercedes: El video se oscurece al bajar ---
+    gsap.to(".video-container", {
+      scrollTrigger: {
+        trigger: ".fiscal-section",
+        start: "top bottom",
+        end: "top center",
+        scrub: true,
+      },
+      opacity: 0.3,
+      scale: 1.1 // Ligero zoom al bajar
+    });
   }, { scope: container });
 
   return (
-    <div ref={container} className="main-container bg-[#0f172a] text-white transition-colors duration-700">
-      
-      <section className="h-screen flex flex-col justify-center items-center px-6 text-center">
+    <div ref={container} className="main-container bg-[#19374c] text-white transition-colors duration-700">
+      <section className="relative h-screen flex flex-col justify-center items-center text-center overflow-hidden">
+        
+        <div className="video-container absolute inset-0 z-0">
+          <AdvancedVideo 
+            cldVid={myVideo} 
+            autoPlay 
+            loop 
+            muted 
+            playsInline 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/40" />
+        </div>
+
+        <div className="relative z-10 px-4">
+          <span className="text-blue-400 font-mono mb-4 tracking-[0.3em] uppercase text-sm block">
+            Innovación Administrativa
+          </span>
+          <h1 className="hero-title text-5xl md:text-8xl font-bold tracking-tighter leading-none">
+            FISCALIZACIÓN <br /> <span className="text-blue-600 italic">INTELIGENTE</span>
+          </h1>
+          <p className="mt-8 max-w-2xl mx-auto text-gray-200 text-lg md:text-xl leading-relaxed">
+            Digitalizamos tu estructura operativa para la Reforma Fiscal 2026. 
+            No solo software, sino materialidad y razón de negocios.
+          </p>
+          <div className="mt-12 animate-bounce text-white/50">↓</div>
+        </div>
+      </section>
+
+      <section className="h-screen flex flex-col justify-center items-center text-center">
         <picture>
           <source srcSet="/img/banners/dos-hombres-de-negocios-felices-leyendo-un-correo-electronico-en-la-computadora-portatil-en-la-oficina-el-foco-esta-en-el-hombre-de-negocios-adulto-medio.webp" type="image/webp" />
           <img 
@@ -57,15 +110,15 @@ function App() {
             className="banner-img w-full h-full object-cover"
           />
         </picture>
-        <span className="text-blue-500 font-mono mb-4 tracking-[0.3em] uppercase text-sm">Innovación Administrativa</span>
+        <span className="text-[#19374c]-500 font-mono mb-4 tracking-[0.3em] uppercase text-sm">Innovación Administrativa</span>
         <h1 className="hero-title text-5xl md:text-8xl font-bold tracking-tighter leading-none">
           FISCALIZACIÓN <br /> <span className="text-blue-600 italic">INTELIGENTE</span>
         </h1>
-        <p className="mt-8 max-w-2xl text-gray-400 text-lg md:text-xl leading-relaxed">
+        <p className="mt-8 max-w-2xl text-[#19374c]-400 text-lg md:text-xl leading-relaxed">
           Digitalizamos tu estructura operativa para la Reforma Fiscal 2026. 
           No solo software, sino materialidad y razón de negocios.
         </p>
-        <div className="mt-12 animate-bounce text-gray-500">↓</div>
+        <div className="mt-12 animate-bounce text-[#19374c]-500">↓</div>
       </section>
 
       <section className="fiscal-section min-h-screen py-24 px-6 flex items-center">
