@@ -117,9 +117,31 @@ function App() {
         end: "top center",
         scrub: true,
       },
-      backgroundColor: "rgba(25, 55, 76, 0.95)", // Se funde con el color de la siguiente sección
+      backgroundColor: "rgba(0, 0, 0, 0.86)", // Se funde con el color de la siguiente sección
     });
   }, { scope: container });
+
+   const servicios = [
+  {
+    titulo: 'Rediseño Operativo',
+    categoria: 'Estructura',
+    desc: 'Optimización de procesos críticos para la alta dirección.',
+    img: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800' // Imagen tecnológica
+  },
+  {
+    titulo: 'Ecosistema Cloud',
+    categoria: 'Digitalización',
+    desc: 'Infraestructura robusta para departamentos contables modernos.',
+    img: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800' // Imagen de servidores/chips
+  },
+  {
+    titulo: 'Blindaje Fiscal',
+    categoria: 'Seguridad',
+    desc: 'Protección avanzada mediante fiscalización digital preventiva.',
+    img: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=800' // Imagen de seguridad
+  }
+];
+
 
   return (
     // CAMBIO: Fondo principal a tu color corporativo y texto claro
@@ -168,7 +190,7 @@ function App() {
           {/* CAMBIO: Overlay más oscuro desde el inicio */}
           <div className="video-overlay absolute inset-0 bg-black/60 transition-colors duration-500" />
           {/* Gradiente para suavizar la transición a la siguiente sección */}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#19374c]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#050505]" />
         </div>
 
         <div className="hero-content relative text-center text-left px-4 mb-6">
@@ -208,24 +230,38 @@ function App() {
         </div>
       </section>
 
-      {/* --- SECCIÓN SERVICIOS --- */}
-      <section className="py-32 px-6 bg-[#ffffff]"> {/* Un tono ligeramente más oscuro para separar */}
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-8">
-            {['Rediseño Operativo', 'Ecosistema Cloud', 'Blindaje Fiscal'].map((item, i) => (
-              <div key={i} className="reveal bg-white/5 p-10 rounded-[2.5rem] border border-white/10 hover:border-[#39d1fa]/50 transition-all group">
-                <div className="w-14 h-14 bg-[#39d1fa]/10 rounded-2xl mb-6 flex items-center justify-center text-[#39d1fa] font-bold text-xl group-hover:bg-[#39d1fa] group-hover:text-[#19374c] transition-all">
-                  0{i + 1}
+     
+    <section className="py-32 px-6 bg-[#050505]"> {/* Cambiado a negro para el efecto card */}
+      <div className="max-w-7xl mx-auto">
+        
+        {/* Título de sección usando tu clase elegante */}
+        <h2 className="text-p-sec2 mb-16 text-white">
+          Servicios <span>Especializados.</span>
+        </h2>
+
+        <article className="cards">
+          {servicios.map((srv, i) => (
+            <div key={i} className="previewCard">
+              <img src={srv.img} className="backdrop" alt={srv.titulo} />
+              <div className="content">
+                <div className="category">{srv.categoria}</div>
+                <div className="title">{srv.titulo}</div>
+                <div className="description">
+                  <p>{srv.desc}</p>
+                  <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                      <path d="M504-480 348-636q-11-11-11-28t11-28q11-11 28-11t28 11l184 184q6 6 8.5 13t2.5 15q0 8-2.5 15t-8.5 13L404-268q-11 11-28 11t-28-11q-11-11-11-28t11-28l156-156Z"/>
+                    </svg>
+                  </span>
                 </div>
-                <h3 className="text-2xl font-bold mb-4 text-black">{item}</h3>
-                <p className="text-slate-400 leading-relaxed">
-                  Soluciones diseñadas para la alta dirección y departamentos contables.
-                </p>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            </div>
+          ))}
+        </article>
+      </div>
+    </section>
+  );
+
       <section id="fiscal" className="fiscal-section min-h-screen py-32 px-6 bg-[#19374c]">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-20 items-center">
           <div className="reveal">
