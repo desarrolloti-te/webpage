@@ -206,7 +206,7 @@ function App() {
       </section>
 
       {/* --- SECCIÓN FISCAL (Fondo Corporativo) --- */}
-      <section id="fiscal" className="fiscal-section min-h-screen py-32 px-6 bg-[#19374c]">
+      <section id="fiscal" className="fiscal-section min-h-screen py-32 px-6 bg-[#050505]">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-20 items-center">
           <div className="reveal">
             <h2 className="text-p-sec2 mb-8 text-white leading-tight">
@@ -260,7 +260,7 @@ function App() {
         </article>
       </div>
     </section>
-  );
+  
 
       <section id="fiscal" className="fiscal-section min-h-screen py-32 px-6 bg-[#19374c]">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-20 items-center">
