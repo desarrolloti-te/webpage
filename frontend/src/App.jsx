@@ -17,10 +17,61 @@ function App() {
     .delivery(format("auto"));
 
   useGSAP(() => {
-    const tl = gsap.timeline();
 
-    tl.from(".nav-container", { y: -20, opacity: 0, duration: 1, ease: "power3.out" })
-      .from(".hero-content", { y: 60, opacity: 0, duration: 1.2, ease: "power4.out" }, "-=0.5");
+    const tl = gsap.timeline();
+    tl.from(".nav-container", { 
+      y: -30, 
+      opacity: 0, 
+      duration: 1.2, 
+      ease: "expo.out" 
+    })
+    .from(".hero-content h1 span", { 
+      y: 100, 
+      opacity: 0, 
+      stagger: 0.2, 
+      duration: 1.5, 
+      ease: "power4.out" 
+    }, "-=0.8")
+    .from(".hero-content p", { 
+      opacity: 0, 
+      y: 20, 
+      duration: 1 
+    }, "-=1");
+
+    // 2. EFECTO PARALLAX EN VIDEO
+    gsap.to(".video-container video", {
+      scrollTrigger: {
+        trigger: ".hero-content",
+        start: "top top",
+        end: "bottom top",
+        scrub: true
+      },
+      y: 150, // El video se mueve más lento que el scroll
+      scale: 1.2
+    });
+
+    // 3. REVELACIÓN DE SECCIONES (CLASE .reveal)
+    const reveals = gsap.utils.toArray('.reveal');
+    reveals.forEach((el) => {
+      gsap.from(el, {
+        scrollTrigger: {
+          trigger: el,
+          start: "top 85%",
+          toggleActions: "play none none reverse"
+        },
+        y: 50,
+        opacity: 0,
+        duration: 1.2,
+        ease: "power3.out"
+      });
+    });
+
+    // 4. CAMBIO DINÁMICO DE NAVBAR (OPTIMIZADO)
+   
+
+
+    // tl.from(".nav-container", { y: -20, opacity: 0, duration: 1, ease: "power3.out" })
+    //   .from(".hero-content", { y: 60, opacity: 0, duration: 1.2, ease: "power4.out" }, "-=0.5");
 
     const lightSections = document.querySelectorAll(".bg-white, .bg-\\[\\#ffffff\\]");
 
@@ -44,11 +95,11 @@ function App() {
 
       if (isDarkText) {
         // ESTILO PARA FONDO BLANCO (Texto oscuro)
-        gsap.to(navLogoBox, { backgroundColor: "rgba(0,0,0,0.05)", borderColor: "rgba(0,0,0,0.1)", duration: 0.3 });
+        gsap.to(navLogoBox, { backgroundColor: "rgba(255,255,255,0.1)", borderColor: "rgba(255,255,255,0.2)", duration: 0.3 });
         gsap.to(navLinksBox, { backgroundColor: "rgba(0,0,0,0.05)", borderColor: "rgba(0,0,0,0.1)", duration: 0.3 });
         gsap.to(brandText, { color: "#1e293b", duration: 0.3 }); // Slate 800
         gsap.to(logoImg, { filter: "brightness(1) invert(0)", duration: 0.3 });
-        navLinks.forEach(link => gsap.to(link, { color: "#475569", duration: 0.3 }));
+        navLinks.forEach(link => gsap.to(link, { color: "#47556900", duration: 0.3 }));
       } else {
         // ESTILO PARA FONDO OSCURO (Texto blanco - Original)
         gsap.to(navLogoBox, { backgroundColor: "rgba(255,255,255,0.1)", borderColor: "rgba(255,255,255,0.2)", duration: 0.3 });
@@ -88,16 +139,16 @@ function App() {
               </span>
             </div>
           </div>
-          <div className="hidden lg:flex items-center gap-6 bg-white/10 backdrop-blur-md px-8 py-3 rounded-full border border-white/40 shadow-lg shadow-black/5">
+          <div className="hidden lg:flex items-center gap-6 bg-white/10 backdrop-blur-md px-8 py-3 rounded-full border border-white/20 shadow-sm transition-all">
             {['Conócenos', 'Servicios', 'Soporte'].map((item) => (
-              <a key={item} href={`#${item.toLowerCase()}`} className="text-sm font-medium text-gray-600 hover:text-black transition-colors">
+              <a key={item} href={`#${item.toLowerCase()}`} className="text-sm font-medium text-white text-sm md:text-base transition-colors">
                 {item}
               </a>
             ))}
           </div>
-          <button className="flex items-center gap-2 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 shadow-sm">
-            <span className="text-sm">Transformar mi empresa</span>
-            <div className="bg-green-300 p-1.5 rounded-full group-hover:rotate-45 transition-transform">
+          <button className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 shadow-sm">
+            <span className="brand-text tracking-tight text-white text-sm md:text-base font-medium">Transformar mi empresa</span>
+            <div className="p-1.5 rounded-full group-hover:rotate-45 transition-transform">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
                 <path d="M7 17L17 7M17 7H7M17 7V17" />
               </svg>
@@ -107,7 +158,7 @@ function App() {
       </nav>
 
       {/* --- HERO SECTION --- */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative h-screen flex items-end justify-center overflow-hidden">
         <div className="video-container absolute inset-0 z-0">
           <AdvancedVideo
             cldVid={myVideo}
@@ -120,12 +171,12 @@ function App() {
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#19374c]" />
         </div>
 
-        <div className="hero-content relative z-10 text-center px-4">
+        <div className="hero-content relative text-center text-left px-4 mb-6">
           <h1 className="text-5xl md:text-8xl font-bold tracking-tighter leading-[0.9]">
             <span className="text-white">Fiscalización </span>
             <span className="text-[#39d1fa] italic">Digital</span>
           </h1>
-          <p className="mt-8 max-w-2xl mx-auto text-slate-300 text-lg md:text-2xl leading-relaxed font-light">
+          <p className="mt-8 max-w-3xl mx-auto text-slate-300 text-lg  text-center md:text-2xl leading-relaxed font-light">
             Especialistas en trazabilidad, materialidad y cumplimiento. <br />
             <span className="text-white font-medium">Un solo ecosistema para tu empresa.</span>
           </p>
@@ -155,7 +206,7 @@ function App() {
             {/* Elemento visual que simula tecnología */}
             <div className="w-full aspect-video bg-slate-800/50 rounded-[2rem] shadow-2xl border border-white/10 backdrop-blur-3xl p-4">
               <div className="w-full h-full bg-[#19374c]/50 rounded-[1.5rem] flex items-center justify-center border border-white/5">
-                <span className="text-[#39d1fa] font-mono animate-pulse">SYSTEM_READY: MONITORING_ACTIVE</span>
+                <span className="text-[#39d1fa] font-mono animate-pulse"></span>
               </div>
             </div>
           </div>
