@@ -172,9 +172,9 @@ function App() {
         </div>
 
         <div className="hero-content relative text-center text-left px-4 mb-6">
-          <h1 className="text-5xl md:text-8xl font-bold tracking-tighter leading-[0.9]">
-            <span className="text-white">Fiscalización </span>
-            <span className="text-[#39d1fa] italic">Digital</span>
+          <h1 className="header-text-sec1 tracking-tighter leading-[0.9]">
+            <span className="text-white">Blinda tu empresa</span>
+            <span className="text-[#5FC5F] italic"> con fiscalización digital</span>
           </h1>
           <p className="mt-8 max-w-3xl mx-auto text-slate-300 text-lg  text-center md:text-2xl leading-relaxed font-light">
             Especialistas en trazabilidad, materialidad y cumplimiento. <br />
@@ -187,8 +187,8 @@ function App() {
       <section id="fiscal" className="fiscal-section min-h-screen py-32 px-6 bg-[#19374c]">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-20 items-center">
           <div className="reveal">
-            <h2 className="text-5xl md:text-7xl font-bold mb-8 text-white leading-tight">
-              Blindaje <br /> <span className="text-[#39d1fa]">Estratégico.</span>
+            <h2 className="text-p-sec2 mb-8 text-white leading-tight">
+              Blindaje  <span className="text-[#39d1fa] ml-8" >Estratégico.</span>
             </h2>
             <p className="text-slate-300 text-lg mb-8 leading-relaxed">
               Hacienda ahora ve lo que tú no ves. Si tu operación administrativa no tiene materialidad y razón de negocios, tu empresa es vulnerable.
@@ -201,14 +201,9 @@ function App() {
               </div>
             </div>
           </div>
-
-          <div className="reveal flex justify-center">
-            {/* Elemento visual que simula tecnología */}
-            <div className="w-full aspect-video bg-slate-800/50 rounded-[2rem] shadow-2xl border border-white/10 backdrop-blur-3xl p-4">
-              <div className="w-full h-full bg-[#19374c]/50 rounded-[1.5rem] flex items-center justify-center border border-white/5">
-                <span className="text-[#39d1fa] font-mono animate-pulse"></span>
-              </div>
-            </div>
+          <div class="canvas-container">
+              {/* <spline-viewer url="https://prod.spline.design/UWoeqiir20o49Dah/scene.splinecode"></spline-viewer> */}
+              <spline-viewer url="https://prod.spline.design/LEvjG3OETYd2GsRw/scene.splinecode"></spline-viewer>
           </div>
         </div>
       </section>
