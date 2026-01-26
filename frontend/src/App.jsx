@@ -86,29 +86,38 @@ function App() {
         onLeaveBack: () => updateNavStyle(false)// Sale por arriba
       });
     });
-    function updateNavStyle(isDarkText) {
-      const navLogoBox = document.querySelector(".nav-logo-box");
-      const navLinksBox = document.querySelector(".nav-links-box");
-      const logoImg = document.querySelector(".logo-img");
-      const brandText = document.querySelector(".brand-text");
-      const navLinks = document.querySelectorAll(".nav-link");
+  function updateNavStyle(isDarkText) {
+  const navLogoBox = document.querySelector(".nav-logo-box");
+  const navLinksBox = document.querySelector(".nav-links-box");
+  const logoImg = document.querySelector(".logo-img");
+  const brandText = document.querySelector(".brand-text");
+  const navLinks = document.querySelectorAll(".nav-link");
+  const actionButton = document.querySelector(".nav-action-btn");
+  const actionText = actionButton?.querySelector("span");
 
-      if (isDarkText) {
-        // ESTILO PARA FONDO BLANCO (Texto oscuro)
-        gsap.to(navLogoBox, { backgroundColor: "rgba(255,255,255,0.1)", borderColor: "rgba(255,255,255,0.2)", duration: 0.3 });
-        gsap.to(navLinksBox, { backgroundColor: "rgba(0,0,0,0.05)", borderColor: "rgba(0,0,0,0.1)", duration: 0.3 });
-        gsap.to(brandText, { color: "#1e293b", duration: 0.3 }); // Slate 800
-        gsap.to(logoImg, { filter: "brightness(1) invert(0)", duration: 0.3 });
-        navLinks.forEach(link => gsap.to(link, { color: "#47556900", duration: 0.3 }));
-      } else {
-        // ESTILO PARA FONDO OSCURO (Texto blanco - Original)
-        gsap.to(navLogoBox, { backgroundColor: "rgba(255,255,255,0.1)", borderColor: "rgba(255,255,255,0.2)", duration: 0.3 });
-        gsap.to(navLinksBox, { backgroundColor: "rgba(255,255,255,0.7)", borderColor: "rgba(255,255,255,0.4)", duration: 0.3 });
-        gsap.to(brandText, { color: "#ffffff", duration: 0.3 });
-        gsap.to(logoImg, { filter: "brightness(0) invert(1)", duration: 0.3 });
-        navLinks.forEach(link => gsap.to(link, { color: "#4b5563", duration: 0.3 }));
-      }
-    }
+  if (isDarkText) {
+    // FONDO BLANCO → NAV CORPORATIVO OSCURO
+    gsap.to(navLogoBox, { backgroundColor: "#19374C", borderColor: "#19374C", duration: 0.3 });
+    gsap.to(navLinksBox, { backgroundColor: "#19374C", borderColor: "#19374C", duration: 0.3 });
+    gsap.to(actionButton, { backgroundColor: "#19374C", borderColor: "#19374C", duration: 0.3 });
+
+    gsap.to(brandText, { color: "#ffffff", duration: 0.3 });
+    gsap.to(actionText, { color: "#ffffff", duration: 0.3 });
+    gsap.to(logoImg, { filter: "brightness(0) invert(1)", duration: 0.3 });
+    navLinks.forEach(link => gsap.to(link, { color: "#ffffff", duration: 0.3 }));
+  } else {
+    // FONDO OSCURO → NAV CLARO CON BLUR (ORIGINAL)
+    gsap.to(navLogoBox, { backgroundColor: "rgba(255,255,255,0.1)", borderColor: "rgba(255,255,255,0.2)", duration: 0.3 });
+    gsap.to(navLinksBox, { backgroundColor: "rgba(255,255,255,0.1)", borderColor: "rgba(255,255,255,0.4)", duration: 0.3 });
+    gsap.to(actionButton, { backgroundColor: "rgba(255,255,255,0.1)", borderColor: "rgba(255,255,255,0.2)", duration: 0.3 });
+
+    gsap.to(brandText, { color: "#ffffff", duration: 0.3 });
+    gsap.to(actionText, { color: "#ffffff", duration: 0.3 });
+    gsap.to(logoImg, { filter: "brightness(0) invert(1)", duration: 0.3 });
+    navLinks.forEach(link => gsap.to(link, { color: "#ffffff", duration: 0.3 }));
+  }
+}
+
     // Oscurecimiento dinámico al hacer scroll
     gsap.to(".video-overlay", {
       scrollTrigger: {
@@ -117,35 +126,35 @@ function App() {
         end: "top center",
         scrub: true,
       },
-      backgroundColor: "rgba(0, 0, 0, 0.86)", // Se funde con el color de la siguiente sección
+      backgroundColor: "#19374C", // Se funde con el color de la siguiente sección
     });
   }, { scope: container });
 
    const servicios = [
   {
-    titulo: 'Rediseño Operativo',
-    categoria: 'Estructura',
-    desc: 'Optimización de procesos críticos para la alta dirección.',
-    img: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800' // Imagen tecnológica
-  },
-  {
-    titulo: 'Ecosistema Cloud',
+    titulo: 'CONTPAQi',
     categoria: 'Digitalización',
-    desc: 'Infraestructura robusta para departamentos contables modernos.',
-    img: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800' // Imagen de servidores/chips
+    desc: 'Optimización de procesos administrativos, contables y operativos con tecnología.',
+    img: '/img/banners/dos-hombres-de-negocios-felices-leyendo-un-correo-electronico-en-la-computadora-portatil-en-la-oficina-el-foco-esta-en-el-hombre-de-negocios-adulto-medio.webp' // Imagen tecnológica
   },
   {
-    titulo: 'Blindaje Fiscal',
-    categoria: 'Seguridad',
-    desc: 'Protección avanzada mediante fiscalización digital preventiva.',
-    img: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=800' // Imagen de seguridad
+    titulo: 'Rediseño Empresarial',
+    categoria: 'Cumplimiento y automatización',
+    desc: 'Transformación digital de tu empresa con materialidad, trazabilidad y razón de negocios.',
+    img: '/img/banners/dos-hombres-de-negocios-felices-leyendo-un-correo-electronico-en-la-computadora-portatil-en-la-oficina-el-foco-esta-en-el-hombre-de-negocios-adulto-medio.webp' // Imagen de servidores/chips
+  },
+  {
+    titulo: 'Capacitación',
+    categoria: 'Potencialidad',
+    desc: 'Eleva el potencial digital, operativo y fiscal de tu personal.',
+    img: '/img/banners/dos-hombres-de-negocios-felices-leyendo-un-correo-electronico-en-la-computadora-portatil-en-la-oficina-el-foco-esta-en-el-hombre-de-negocios-adulto-medio.webp' // Imagen de seguridad
   }
 ];
 
 
   return (
     // CAMBIO: Fondo principal a tu color corporativo y texto claro
-    <div ref={container} className="main-container bg-[#19374c] text-white overflow-x-hidden">
+    <div ref={container} className="main-container bg-[#19374C] text-white overflow-x-hidden">
 
       {/* Navbar (Mantenemos el estilo claro para contraste o puedes usar el oscuro anterior) */}
       <nav className="nav-container fixed top-6 w-full z-50 px-4 flex justify-center">
@@ -161,21 +170,24 @@ function App() {
               </span>
             </div>
           </div>
-          <div className="hidden lg:flex items-center gap-6 bg-white/10 backdrop-blur-md px-8 py-3 rounded-full border border-white/20 shadow-sm transition-all">
+          <div className="nav-links-box hidden lg:flex items-center gap-6 bg-white/10 backdrop-blur-md px-8 py-3 rounded-full border border-white/20 shadow-sm transition-all">
             {['Conócenos', 'Servicios', 'Soporte'].map((item) => (
-              <a key={item} href={`#${item.toLowerCase()}`} className="text-sm font-medium text-white text-sm md:text-base transition-colors">
+              <a key={item} href={`#${item.toLowerCase()}`} className="nav-link text-sm font-medium text-white text-sm md:text-base transition-colors">
                 {item}
               </a>
             ))}
           </div>
-          <button className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 shadow-sm">
-            <span className="brand-text tracking-tight text-white text-sm md:text-base font-medium">Transformar mi empresa</span>
-            <div className="p-1.5 rounded-full group-hover:rotate-45 transition-transform">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                <path d="M7 17L17 7M17 7H7M17 7V17" />
-              </svg>
-            </div>
-          </button>
+          <button className="nav-action-btn flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 shadow-sm transition-all">
+  <span className="brand-text tracking-tight text-white text-sm md:text-base font-medium">
+    Transformar mi empresa
+  </span>
+  <div className="p-1.5 rounded-full group-hover:rotate-45 transition-transform">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+      <path d="M7 17L17 7M17 7H7M17 7V17" />
+    </svg>
+  </div>
+</button>
+
         </div>
       </nav>
 
@@ -190,7 +202,7 @@ function App() {
           {/* CAMBIO: Overlay más oscuro desde el inicio */}
           <div className="video-overlay absolute inset-0 bg-black/60 transition-colors duration-500" />
           {/* Gradiente para suavizar la transición a la siguiente sección */}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#050505]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#19374C]" />
         </div>
 
         <div className="hero-content relative text-center text-left px-4 mb-6">
@@ -206,7 +218,7 @@ function App() {
       </section>
 
       {/* --- SECCIÓN FISCAL (Fondo Corporativo) --- */}
-      <section id="fiscal" className="fiscal-section min-h-screen py-32 px-6 bg-[#050505]">
+      <section id="fiscal" className="fiscal-section min-h-screen py-32 px-6 bg-[#19374C]">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-20 items-center">
           <div className="reveal">
             <h2 className="text-p-sec2 mb-8 text-white leading-tight">
@@ -225,17 +237,17 @@ function App() {
           </div>
           <div class="canvas-container">
               {/* <spline-viewer url="https://prod.spline.design/UWoeqiir20o49Dah/scene.splinecode"></spline-viewer> */}
-              <spline-viewer url="https://prod.spline.design/LEvjG3OETYd2GsRw/scene.splinecode"></spline-viewer>
+              {/* <spline-viewer url="https://prod.spline.design/LEvjG3OETYd2GsRw/scene.splinecode"></spline-viewer> */}
           </div>
         </div>
       </section>
 
      
-    <section className="py-32 px-6 bg-[#050505]"> {/* Cambiado a negro para el efecto card */}
+    <section className="py-32 px-6 bg-[#ffffff]"> {/* Cambiado a negro para el efecto card */}
       <div className="max-w-7xl mx-auto">
         
         {/* Título de sección usando tu clase elegante */}
-        <h2 className="text-p-sec2 mb-16 text-white">
+        <h2 className="text-p-sec2 mb-16 text-[#19374C]" >
           Servicios <span>Especializados.</span>
         </h2>
 
